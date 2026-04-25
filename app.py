@@ -70,5 +70,29 @@ def post_write():
     return render_template("write.html")
 
 
+@app.route("/post/<int:post_id>/edit", methods=["GET", "POST"])
+def post_edit(post_id):
+    db = get_db()
+    post = db.execute("SELECT * FROM posts WHERE id = ?", (post_id,)).fetchone()
+    if not post:
+        return "게시글을 찾을 수 없습니다.", 404
+    if request.method == "POST":
+        db.execute(
+            "UPDATE posts SET title = ?, content = ? WHERE id = ?",
+            (request.form["title"], request.form["content"], post_id),
+        )
+        db.commit()
+        return redirect(url_for("post_detail", post_id=post_id))
+    return render_template("write.html", post=post)
+
+
+@app.route("/post/<int:post_id>/delete", methods=["POST"])
+def post_delete(post_id):
+    db = get_db()
+    db.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+    db.commit()
+    return redirect(url_for("post_list"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
