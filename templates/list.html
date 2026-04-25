@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}최신 글 - The Ledger{% endblock %}
+
+{% block content %}
+<main class="max-w-[680px] mx-auto px-6 py-12 md:py-24">
+  <!-- Hero Section -->
+  <header class="mb-stack-lg text-center md:text-left">
+    <h1 class="font-display-lg text-display-lg text-stone-900 mb-4">최신 글</h1>
+    <p class="font-body-lg text-body-lg text-tertiary max-w-[500px]">장인 정신, 기술, 그리고 느린 삶의 교차점에 대한 엄선된 생각들의 모음입니다.</p>
+  </header>
+
+  <!-- Post List -->
+  <section class="space-y-0">
+  {% if posts %}
+    {% for post in posts %}
+    {% if loop.first %}
+    <!-- Featured Post -->
+    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="group block cursor-pointer">
+      <article>
+        <span class="font-label-caps text-label-caps text-secondary mb-2 block">최근 에세이</span>
+        <h2 class="font-headline-lg text-headline-lg text-stone-900 group-hover:text-secondary transition-colors duration-300">{{ post.title }}</h2>
+        <p class="font-body-md text-body-md text-tertiary mt-3 line-clamp-2 max-w-[600px]">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+        <time class="font-body-md text-body-md text-tertiary mt-3 block">{{ post.created_at[:16] }}</time>
+      </article>
+    </a>
+    <div class="h-[1px] w-full bg-stone-200 mt-12"></div>
+    {% else %}
+    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="group block cursor-pointer py-4">
+      <article>
+        <div class="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
+          <h3 class="font-headline-md text-headline-md text-stone-900 group-hover:text-secondary transition-colors duration-300">{{ post.title }}</h3>
+          <time class="font-body-md text-body-md text-tertiary whitespace-nowrap">{{ post.created_at[:10] }}</time>
+        </div>
+        <p class="font-body-md text-body-md text-tertiary mt-2 line-clamp-2 max-w-[600px]">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+      </article>
+    </a>
+    {% if not loop.last %}
+    <div class="h-[1px] w-full bg-stone-200"></div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  {% else %}
+    <div class="py-stack-lg text-center">
+      <p class="font-body-lg text-body-lg text-tertiary">아직 게시글이 없습니다.</p>
+      <a href="{{ url_for('post_write') }}" class="inline-block mt-6 bg-secondary text-primary-container px-6 py-2 rounded font-body-md font-medium hover:opacity-90 active:scale-95 transition-all">첫 글 쓰기</a>
+    </div>
+  {% endif %}
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - The Ledger{% endblock %}
+
+{% block content %}
+<main class="max-w-[680px] mx-auto px-6 py-stack-lg min-h-screen">
+  <article>
+    <!-- Post Header -->
+    <header class="mb-stack-md">
+      <h1 class="font-display-lg text-display-lg text-stone-900 mb-6">{{ post.title }}</h1>
+      <div class="flex items-center gap-4 text-primary font-body-md italic border-b border-outline-variant pb-6">
+        <span>{{ post.created_at[:16] }}</span>
+      </div>
+    </header>
+
+    <!-- Body Content -->
+    <div class="prose font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+      {% for paragraph in post.content.split('\n') %}
+      {% if paragraph %}
+      <p class="mb-6">{{ paragraph }}</p>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Bottom Actions -->
+    <footer class="mt-stack-lg flex flex-col sm:flex-row items-center justify-between gap-4 pt-stack-md border-t border-outline-variant">
+      <div class="flex gap-4">
+        <a href="{{ url_for('post_write') }}" class="flex items-center gap-2 bg-secondary text-primary-container px-6 py-3 rounded font-body-md hover:opacity-90 transition-all active:scale-95 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">edit</span>
+          수정하기
+        </a>
+        <button class="flex items-center gap-2 border border-secondary text-secondary px-6 py-3 rounded font-body-md hover:bg-secondary-fixed-dim transition-all active:scale-95">
+          <span class="material-symbols-outlined text-[18px]">delete</span>
+          삭제하기
+        </button>
+      </div>
+      <a href="{{ url_for('post_list') }}" class="flex items-center gap-2 text-primary font-body-md hover:text-on-surface transition-colors">
+        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        목록으로
+      </a>
+    </footer>
+  </article>
+</main>
+{% endblock %}

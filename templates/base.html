@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{% block title %}The Ledger{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-fixed": "#ffdad3",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#fda998",
+        "surface-tint": "#5f5e5b",
+        "secondary-fixed-dim": "#ffb4a5",
+        "tertiary": "#705a49",
+        "secondary": "#8d4c3f",
+        "tertiary-fixed": "#fbddc7",
+        "surface-dim": "#e1d8d4",
+        "on-tertiary-fixed": "#28180b",
+        "on-primary-container": "#6f6e6a",
+        "on-secondary-fixed-variant": "#71352a",
+        "on-surface": "#1e1b18",
+        "tertiary-container": "#fff0e7",
+        "primary-container": "#f5f2ed",
+        "surface-container-high": "#efe6e2",
+        "inverse-primary": "#c9c6c2",
+        "on-background": "#1e1b18",
+        "on-error-container": "#93000a",
+        "on-tertiary-fixed-variant": "#574333",
+        "on-primary-fixed-variant": "#474743",
+        "surface-bright": "#fff8f5",
+        "surface-container-highest": "#e9e1dc",
+        "outline-variant": "#c8c7be",
+        "surface-variant": "#e9e1dc",
+        "inverse-surface": "#34302c",
+        "error": "#ba1a1a",
+        "on-secondary-container": "#783b2f",
+        "background": "#fff8f5",
+        "primary": "#5f5e5b",
+        "on-tertiary-container": "#816a58",
+        "primary-fixed": "#e5e2dd",
+        "on-primary-fixed": "#1c1c19",
+        "on-error": "#ffffff",
+        "surface": "#fff8f5",
+        "on-secondary-fixed": "#390b04",
+        "surface-container": "#f5ece7",
+        "surface-container-low": "#fbf2ed",
+        "on-surface-variant": "#474741",
+        "on-primary": "#ffffff",
+        "error-container": "#ffdad6",
+        "surface-container-lowest": "#ffffff",
+        "on-tertiary": "#ffffff",
+        "tertiary-fixed-dim": "#dec1ac",
+        "outline": "#787770",
+        "primary-fixed-dim": "#c9c6c2",
+        "inverse-on-surface": "#f8efea"
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        lg: "0.25rem",
+        xl: "0.5rem",
+        full: "0.75rem"
+      },
+      spacing: {
+        gutter: "24px",
+        "stack-sm": "16px",
+        "margin-mobile": "16px",
+        base: "4px",
+        "container-max": "1120px",
+        "stack-lg": "64px",
+        "stack-md": "32px"
+      },
+      fontFamily: {
+        "display-lg": ["Newsreader", "serif"],
+        "headline-md": ["Newsreader", "serif"],
+        "body-lg": ["Work Sans", "sans-serif"],
+        "body-md": ["Work Sans", "sans-serif"],
+        "headline-lg": ["Newsreader", "serif"],
+        "label-caps": ["Work Sans", "sans-serif"]
+      },
+      fontSize: {
+        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+        "body-lg": ["18px", {"lineHeight": "1.7", "fontWeight": "400"}],
+        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+textarea::placeholder, input::placeholder {
+  color: #787770;
+  opacity: 0.6;
+}
+textarea:focus, input:focus {
+  outline: none;
+}
+</style>
+</head>
+<body class="bg-primary-container text-on-surface font-body-md min-h-screen flex flex-col selection:bg-secondary-fixed-dim selection:text-on-secondary-fixed-variant">
+
+<!-- TopAppBar -->
+<header class="bg-[#F5F2ED] border-b border-stone-200 sticky top-0 z-50">
+  <div class="flex justify-between items-center w-full px-6 md:px-12 h-20 max-w-7xl mx-auto">
+    <a href="{{ url_for('post_list') }}" class="text-2xl font-serif italic text-stone-900 hover:opacity-80 transition-all">The Ledger</a>
+    <div class="flex items-center gap-4">
+      <a href="{{ url_for('post_write') }}" class="bg-secondary text-primary-container px-6 py-2 rounded font-body-md font-medium hover:opacity-90 active:scale-95 transition-all">글쓰기</a>
+    </div>
+  </div>
+</header>
+
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+<footer class="bg-[#F5F2ED] border-t border-stone-200 mt-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center w-full py-12 px-6 max-w-[680px] mx-auto text-center md:text-left gap-6">
+    <div class="flex flex-col gap-2">
+      <span class="text-lg font-serif italic text-stone-700">The Ledger</span>
+      <p class="font-serif text-sm tracking-wide text-stone-500">&copy; 2024 유기적 전문성. 모든 권리 보유.</p>
+    </div>
+    <nav class="flex gap-6">
+      <a class="font-serif text-sm tracking-wide text-stone-500 hover:text-stone-900 transition-colors" href="#">개인정보 처리방침</a>
+      <a class="font-serif text-sm tracking-wide text-stone-500 hover:text-stone-900 transition-colors" href="#">이용약관</a>
+      <a class="font-serif text-sm tracking-wide text-stone-500 hover:text-stone-900 transition-colors" href="#">문의하기</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

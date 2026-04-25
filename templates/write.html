@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}작성하기 - The Ledger{% endblock %}
+
+{% block content %}
+<main class="flex-grow flex flex-col items-center px-6 md:px-0">
+  <!-- Editor Header -->
+  <div class="w-full max-w-[680px] mt-stack-lg mb-8 flex justify-between items-end border-b border-outline-variant pb-4">
+    <div class="space-y-1">
+      <span class="font-label-caps text-label-caps text-tertiary uppercase tracking-[0.2em]">초안 작성 중</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <a href="{{ url_for('post_list') }}" class="flex items-center gap-2 px-4 py-2 text-primary hover:bg-surface-container transition-colors rounded border border-transparent hover:border-outline-variant font-body-md">
+        취소
+      </a>
+    </div>
+  </div>
+
+  <!-- Writing Canvas -->
+  <form method="POST" class="w-full max-w-[680px] space-y-8 pb-32">
+    <div class="relative">
+      <input name="title" class="w-full bg-transparent border-none p-0 font-display-lg text-display-lg text-on-surface focus:ring-0 placeholder:italic" placeholder="감각적인 제목을 입력하세요..." type="text" required/>
+    </div>
+    <div class="relative">
+      <textarea name="content" class="w-full bg-transparent border-none p-0 font-body-lg text-body-lg text-on-surface focus:ring-0 min-h-[500px] resize-none leading-relaxed" placeholder="이곳에 당신의 이야기를 시작하세요. 생각이 자유롭게 흐르도록..." required></textarea>
+    </div>
+
+    <!-- Decorative Divider -->
+    <div class="py-stack-md flex justify-center">
+      <div class="w-24 h-[1px] bg-outline-variant opacity-50"></div>
+    </div>
+
+    <!-- Submit -->
+    <div class="flex justify-end">
+      <button type="submit" class="bg-secondary text-primary-container px-6 py-2.5 rounded shadow-sm hover:opacity-90 active:scale-[0.98] transition-all font-body-md font-medium">
+        발행하기
+      </button>
+    </div>
+  </form>
+</main>
+
+<!-- Floating Toolbar -->
+<aside class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-surface-bright/80 backdrop-blur-md border border-outline-variant px-6 py-3 rounded-full flex items-center space-x-6 shadow-xl z-50">
+  <span class="text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" title="굵게">
+    <span class="material-symbols-outlined">format_bold</span>
+  </span>
+  <span class="text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" title="기울임꼴">
+    <span class="material-symbols-outlined">format_italic</span>
+  </span>
+  <span class="text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" title="제목">
+    <span class="material-symbols-outlined">title</span>
+  </span>
+  <div class="h-6 w-[1px] bg-outline-variant"></div>
+  <span class="text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" title="인용구">
+    <span class="material-symbols-outlined">format_quote</span>
+  </span>
+  <span class="text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" title="링크">
+    <span class="material-symbols-outlined">link</span>
+  </span>
+</aside>
+{% endblock %}
