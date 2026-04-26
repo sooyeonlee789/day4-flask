@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, g
 
 app = Flask(__name__)
 DATABASE = "blog.db"
+MIN_POST_COUNT = 124
 
 
 def get_db():
@@ -20,6 +21,20 @@ def close_db(exc):
         db.close()
 
 
+def seed_posts(db):
+    current_count = db.execute("SELECT COUNT(*) FROM posts").fetchone()[0]
+    if current_count >= MIN_POST_COUNT:
+        return
+
+    missing = MIN_POST_COUNT - current_count
+    rows = [
+        (f"샘플 게시글 {current_count + i}", f"자동 생성된 샘플 콘텐츠 {current_count + i}")
+        for i in range(1, missing + 1)
+    ]
+    db.executemany("INSERT INTO posts (title, content) VALUES (?, ?)", rows)
+    db.commit()
+
+
 def init_db():
     db = get_db()
     db.execute(
@@ -31,6 +46,7 @@ def init_db():
         )"""
     )
     db.commit()
+    seed_posts(db)
 
 
 @app.before_request
