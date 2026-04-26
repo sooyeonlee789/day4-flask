@@ -9,6 +9,12 @@
     <p class="font-body-lg text-body-lg text-tertiary max-w-[500px]">장인 정신, 기술, 그리고 느린 삶의 교차점에 대한 엄선된 생각들의 모음입니다.</p>
   </header>
 
+  {% if query %}
+  <p class="font-body-md text-body-md text-tertiary mb-4">검색 결과 {{ total_count }}개</p>
+  {% else %}
+  <p class="font-body-md text-body-md text-tertiary mb-4">전체 {{ total_count }}개 글</p>
+  {% endif %}
+
   <form method="GET" action="{{ url_for('post_list') }}" class="mb-8" id="list-controls-form">
     <div class="flex items-center gap-2">
       <input type="text" name="q" value="{{ query }}" placeholder="검색어 입력" class="flex-1 px-4 py-2 rounded border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-300">

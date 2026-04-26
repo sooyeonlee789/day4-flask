@@ -90,6 +90,7 @@ def post_list():
         posts=posts,
         page=page,
         total_pages=total_pages,
+        total_count=total_count,
         query=query,
         sort=sort,
     )
