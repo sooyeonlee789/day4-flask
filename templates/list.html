@@ -9,6 +9,18 @@
     <p class="font-body-lg text-body-lg text-tertiary max-w-[500px]">장인 정신, 기술, 그리고 느린 삶의 교차점에 대한 엄선된 생각들의 모음입니다.</p>
   </header>
 
+  <form method="GET" action="{{ url_for('post_list') }}" class="mb-8" id="list-controls-form">
+    <div class="flex items-center gap-2">
+      <input type="text" name="q" value="{{ query }}" placeholder="검색어 입력" class="flex-1 px-4 py-2 rounded border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-300">
+      <button type="submit" class="px-4 py-2 rounded bg-secondary text-primary-container hover:opacity-90 transition-opacity">🔍 검색</button>
+      <select name="sort" class="px-3 py-2 rounded border border-stone-300 bg-white text-stone-700" onchange="this.form.submit()">
+        <option value="latest" {% if sort == 'latest' %}selected{% endif %}>최신순</option>
+        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>오래된순</option>
+        <option value="title" {% if sort == 'title' %}selected{% endif %}>제목순 (가나다)</option>
+      </select>
+    </div>
+  </form>
+
   <!-- Post List -->
   <section class="space-y-0">
   {% if posts %}
@@ -41,10 +53,32 @@
     {% endfor %}
   {% else %}
     <div class="py-stack-lg text-center">
+      {% if query %}
+      <p class="font-body-lg text-body-lg text-tertiary">검색 결과가 없습니다.</p>
+      {% else %}
       <p class="font-body-lg text-body-lg text-tertiary">아직 게시글이 없습니다.</p>
       <a href="{{ url_for('post_write') }}" class="inline-block mt-6 bg-secondary text-primary-container px-6 py-2 rounded font-body-md font-medium hover:opacity-90 active:scale-95 transition-all">첫 글 쓰기</a>
+      {% endif %}
     </div>
   {% endif %}
   </section>
+
+  {% if posts %}
+  <nav class="mt-10 flex items-center justify-center gap-4" aria-label="페이지 이동">
+    {% if page > 1 %}
+    <a href="{{ url_for('post_list', page=page-1, q=query, sort=sort) }}" class="px-4 py-2 rounded border border-stone-300 text-stone-700 hover:bg-stone-100 transition-colors">이전</a>
+    {% else %}
+    <span class="px-4 py-2 rounded border border-stone-200 text-stone-400 cursor-not-allowed">이전</span>
+    {% endif %}
+
+    <span class="font-body-md text-body-md text-tertiary">{{ page }} / {{ total_pages }}</span>
+
+    {% if page < total_pages %}
+    <a href="{{ url_for('post_list', page=page+1, q=query, sort=sort) }}" class="px-4 py-2 rounded border border-stone-300 text-stone-700 hover:bg-stone-100 transition-colors">다음</a>
+    {% else %}
+    <span class="px-4 py-2 rounded border border-stone-200 text-stone-400 cursor-not-allowed">다음</span>
+    {% endif %}
+  </nav>
+  {% endif %}
 </main>
 {% endblock %}

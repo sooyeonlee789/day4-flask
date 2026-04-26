@@ -43,8 +43,56 @@ def ensure_db():
 @app.route("/")
 def post_list():
     db = get_db()
-    posts = db.execute("SELECT * FROM posts ORDER BY created_at DESC").fetchall()
-    return render_template("list.html", posts=posts)
+    page = request.args.get("page", default=1, type=int)
+    query = request.args.get("q", default="", type=str).strip()
+    sort = request.args.get("sort", default="latest", type=str)
+    if page < 1:
+        page = 1
+
+    sort_orders = {
+        "latest": "created_at DESC, id DESC",
+        "oldest": "created_at ASC, id ASC",
+        "title": "title COLLATE NOCASE ASC, id ASC",
+    }
+    if sort not in sort_orders:
+        sort = "latest"
+    order_by = sort_orders[sort]
+
+    per_page = 10
+    if query:
+        like_query = f"%{query}%"
+        total_count = db.execute(
+            "SELECT COUNT(*) FROM posts WHERE title LIKE ? OR content LIKE ?",
+            (like_query, like_query),
+        ).fetchone()[0]
+    else:
+        total_count = db.execute("SELECT COUNT(*) FROM posts").fetchone()[0]
+
+    total_pages = max(1, (total_count + per_page - 1) // per_page)
+    if page > total_pages:
+        page = total_pages
+
+    offset = (page - 1) * per_page
+    if query:
+        like_query = f"%{query}%"
+        posts = db.execute(
+            f"SELECT * FROM posts WHERE title LIKE ? OR content LIKE ? ORDER BY {order_by} LIMIT ? OFFSET ?",
+            (like_query, like_query, per_page, offset),
+        ).fetchall()
+    else:
+        posts = db.execute(
+            f"SELECT * FROM posts ORDER BY {order_by} LIMIT ? OFFSET ?",
+            (per_page, offset),
+        ).fetchall()
+
+    return render_template(
+        "list.html",
+        posts=posts,
+        page=page,
+        total_pages=total_pages,
+        query=query,
+        sort=sort,
+    )
 
 
 @app.route("/post/<int:post_id>")
